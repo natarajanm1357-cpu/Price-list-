@@ -1,0 +1,718 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Subam Papers - Quotation</title>
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #555;
+        margin: 0;
+        padding: 20px;
+    }
+
+    /* Lock Screen Modal */
+    #lockScreenOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(20, 20, 20, 0.95);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 999999;
+    }
+
+    .login-box {
+        background: #ffffff;
+        padding: 30px 35px;
+        border-radius: 8px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        width: 320px;
+        text-align: center;
+    }
+
+    .login-box h2 {
+        margin: 0 0 8px 0;
+        font-size: 20px;
+        color: #000;
+    }
+
+    .login-box p {
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    .login-input {
+        width: 100%;
+        padding: 9px 12px;
+        margin-bottom: 14px;
+        border: 1px solid #999;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 13px;
+    }
+
+    .login-input:focus {
+        border-color: #000;
+        outline: none;
+    }
+
+    .login-btn {
+        width: 100%;
+        background-color: #000000;
+        color: #ffffff;
+        border: none;
+        padding: 10px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .login-btn:hover {
+        background-color: #333333;
+    }
+
+    .login-error {
+        color: #d32f2f;
+        font-size: 12px;
+        margin-top: 10px;
+        display: none;
+        font-weight: bold;
+    }
+
+    /* Top Bar Controls */
+    .top-bar {
+        max-width: 210mm;
+        margin: 0 auto 15px auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #ffffff;
+        padding: 12px 20px;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    .print-btn {
+        background-color: #000000;
+        color: #ffffff;
+        border: none;
+        padding: 10px 24px;
+        font-size: 15px;
+        font-weight: bold;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .print-btn:hover { background-color: #333333; }
+
+    .lock-btn {
+        background-color: #d32f2f;
+        color: #ffffff;
+        border: none;
+        padding: 10px 18px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    .lock-btn:hover { background-color: #b71c1c; }
+
+    .document {
+        background: #ffffff !important;
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0 auto;
+        padding: 12mm 18mm;
+        box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        position: relative;
+        box-sizing: border-box;
+        color: #000000;
+    }
+    .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 6px;
+    }
+    .logo-box { width: 140px; text-align: left; }
+    .logo-title {
+        font-family: "Times New Roman", Georgia, serif;
+        font-size: 32px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        line-height: 1;
+        margin: 0;
+    }
+    .logo-dots { display: flex; gap: 6px; margin: 4px 0 2px 2px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .d-red { background: #e52320; }
+    .d-grey { background: #bcbec0; }
+    .d-green { background: #71b329; }
+    .d-blue { background: #009fe3; }
+    .d-brown { background: #c3541c; }
+    .logo-sub {
+        font-family: "Brush Script MT", "Segoe Script", cursive, sans-serif;
+        font-size: 11px;
+        font-weight: bold;
+        color: #000000;
+    }
+    .header-center {
+        flex-grow: 1;
+        text-align: center;
+        padding: 0 10px;
+    }
+    .company-title {
+        font-size: 21px;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+        margin-bottom: 3px;
+    }
+    .company-address {
+        font-size: 9.5px;
+        line-height: 1.35;
+        color: #000000;
+        margin: 0 auto;
+        max-width: 98%;
+    }
+    .header-date { width: 110px; text-align: right; }
+    .txt-input {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13px;
+        color: #000000;
+        border: 1px dashed #777777;
+        background-color: #f7faff;
+        padding: 2px 5px;
+        box-sizing: border-box;
+    }
+    .txt-input:focus { border: 1px solid #000000; outline: none; background-color: #fffde7; }
+    .txt-textarea {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13px;
+        font-weight: bold;
+        color: #000000;
+        border: 1px dashed #777777;
+        background-color: #f7faff;
+        padding: 4px 6px;
+        box-sizing: border-box;
+        resize: vertical;
+        line-height: 1.35;
+    }
+    .txt-textarea:focus { border: 1px solid #000000; outline: none; background-color: #fffde7; }
+    .rate-input {
+        width: 100%;
+        text-align: center;
+        font-size: 12px;
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        color: #000000;
+        border: 1px dashed #888888;
+        background-color: #f7faff;
+        padding: 4px 1px;
+        box-sizing: border-box;
+    }
+    .rate-input:focus { border: 1px solid #000000; outline: none; background-color: #fffde7; }
+    .customer-info { margin-bottom: 8px; line-height: 1.4; font-size: 13px; }
+    .shade-table-container { position: absolute; top: 130px; right: 18mm; }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 12px;
+        text-align: center;
+        background-color: #ffffff;
+    }
+    th, td { 
+        border: 1px solid #000000; 
+        padding: 4px 3px; 
+        font-size: 11px; 
+        background-color: #ffffff;
+        color: #000000;
+    }
+    th { font-weight: bold; line-height: 1.25; vertical-align: middle; }
+    .th-bf-check {
+        display: inline-block;
+        margin-bottom: 2px;
+        cursor: pointer;
+    }
+    .machine-specs-table {
+        width: 80%;
+        margin: 6px 0 10px 0;
+        border: 1px solid #000000;
+    }
+    .machine-specs-table th {
+        background-color: #f7f7f7;
+        font-size: 12px;
+        padding: 3px 4px;
+    }
+    .machine-specs-table td {
+        font-size: 12px;
+        padding: 4px 5px;
+        line-height: 1.45;
+        text-align: left;
+    }
+    .spec-bf-input {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        font-weight: bold;
+        color: #000000;
+        border: 1px dashed #777777;
+        background-color: #f7faff;
+        padding: 1px 4px;
+        width: 90px;
+        box-sizing: border-box;
+    }
+    .spec-bf-input:focus { border: 1px solid #000000; outline: none; background-color: #fffde7; }
+    .table-title { font-size: 13px; font-weight: bold; text-align: center; margin-bottom: 6px; }
+    .adjust-toolbar { text-align: right; margin-bottom: 5px; }
+    .adjust-btn {
+        background: #ffffff;
+        border: 1px solid #000000;
+        color: #000000;
+        padding: 4px 8px;
+        font-size: 11px;
+        cursor: pointer;
+        border-radius: 2px;
+        font-weight: bold;
+        margin-left: 2px;
+    }
+    .adjust-btn:hover { background: #eee; }
+    .tax-select-btn {
+        background: #ffffff;
+        border: 1px solid #000000;
+        color: #000000;
+        padding: 2px 6px;
+        font-size: 11px;
+        cursor: pointer;
+        border-radius: 2px;
+        margin-left: 8px;
+        font-weight: bold;
+    }
+    .footer-section { display: flex; justify-content: space-between; margin-top: 14px; font-size: 11px; }
+    .terms { width: 66%; }
+    .terms ul { padding-left: 16px; margin-top: 2px; }
+    .terms li { margin-bottom: 3.5px; line-height: 1.35; }
+    .contact-info { width: 30%; font-size: 11px; line-height: 1.35; }
+    .contact-info strong { display: block; margin-bottom: 6px; text-decoration: underline; }
+    .person { margin-bottom: 10px; }
+    @page { size: A4 portrait; margin: 10mm 12mm; }
+    @media print {
+        body { background: #ffffff !important; padding: 0; margin: 0; }
+        #lockScreenOverlay, .top-bar, .adjust-toolbar, .th-bf-check, .no-print { display: none !important; }
+        .document { box-shadow: none; padding: 0; width: 100%; min-height: auto; }
+        .shade-table-container { top: 90px; right: 0; }
+        .txt-input, .txt-textarea, .rate-input, .spec-bf-input {
+            border: none !important;
+            background: transparent !important;
+            padding: 0 !important;
+            outline: none !important;
+            color: #000000 !important;
+            resize: none !important;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- Login Lock Screen Overlay -->
+<div id="lockScreenOverlay">
+<div class="login-box">
+<h2>🔒 Security Checkpoint</h2>
+<p>Subam Papers Price Generator</p>
+<input type="text" id="loginUser" class="login-input" placeholder="User ID" autocomplete="off">
+<input type="password" id="loginPass" class="login-input" placeholder="Password" onkeydown="if(event.key==='Enter') verifyLogin()">
+<button type="button" class="login-btn" onclick="verifyLogin()">Login / Unlock</button>
+<div id="loginError" class="login-error">Incorrect User ID or Password!</div>
+</div>
+</div>
+
+<div class="top-bar">
+<div><strong>✏️ Subam Papers Price List Generator</strong></div>
+<div>
+<button type="button" class="lock-btn" onclick="lockScreen()">🔒 Lock</button>
+<button type="button" class="print-btn" onclick="window.print()">🖨️ Print Quotation (A4)</button>
+</div>
+</div>
+
+<div class="document">
+<div class="header-top">
+<div class="logo-box">
+<div class="logo-title">SUBAM</div>
+<div class="logo-dots">
+<span class="dot d-red"></span>
+<span class="dot d-grey"></span>
+<span class="dot d-green"></span>
+<span class="dot d-blue"></span>
+<span class="dot d-brown"></span>
+</div>
+<div class="logo-sub">Packaging confidence</div>
+</div>
+<div class="header-center">
+<div class="company-title">SUBAM PAPERS LIMITED</div>
+<div class="company-address">
+                S.F.No.143-146 Vaduganpatti Village Nadukallur to Tirunelveli, Tirunelveli Taluk, 627010, Tamil Nadu, India.<br>
+<strong>GST No:</strong> 33AAICS5376E1ZA &nbsp;|&nbsp; <strong>CIN No:</strong> U21012TN2004PLC054403
+</div>
+</div>
+<div class="header-date">
+<input type="text" class="txt-input" style="width: 100px; text-align: right; font-weight: bold;" value="07.09.2026">
+</div>
+</div>
+<hr style="border: 0; border-top: 1px solid #000000; margin: 6px 0 10px 0;">
+<div class="customer-info">
+<div>To</div>
+<div style="margin-top: 3px;">
+<textarea class="txt-textarea" rows="2" style="width: 65%;">SRI LAKSHMI GROUP - D1S0052,D1S0053,D1S0054,D1S0043</textarea>
+</div>
+<div style="margin-top: 3px;">
+<input type="text" id="areaField" class="txt-input" style="width: 220px; font-weight: bold;" value="HOSUR" oninput="runTaxCheck()">
+</div>
+</div>
+<div class="shade-table-container">
+<table style="width: auto;">
+<tr>
+<td rowspan="5" style="font-weight: bold; width: 48px;">SHADE</td>
+<td style="width: 48px;">RGYT</td>
+</tr>
+<tr><td>PGYT</td></tr>
+<tr><td>SGYT</td></tr>
+<tr><td>IGYT</td></tr>
+<tr><td>AGYT</td></tr>
+</table>
+</div>
+
+<!-- Machine Specifications Table -->
+<table class="machine-specs-table">
+<thead>
+<tr>
+<th style="width: 32%;">PM3 MACHINE</th>
+<th style="width: 33%;">PM2 MACHINE</th>
+<th style="width: 35%;">PM1 MACHINE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+                    • <strong>GSM:</strong> 80 to 120<br>
+                    • <strong>BF:</strong><input type="text" id="pm3Bf" class="spec-bf-input" value="18 to 24"><br>
+                    • <strong>Deckle:</strong> 355 cm to 365 cm
+</td>
+<td>
+                    • <strong>GSM:</strong> 140 to 240<br>
+                    • <strong>BF:</strong><input type="text" id="pm2Bf" class="spec-bf-input" value="16 to 24"><br>
+                    • <strong>Deckle:</strong> 422 cm to 435 cm
+</td>
+<td>
+                    • <strong>GSM:</strong> 180 to 280<br>
+                    • <strong>BF:</strong><input type="text" id="pm1Bf" class="spec-bf-input" value="16 to 28"><br>
+                    • <strong>Deckle:</strong> 250 cm to 263 cm<br>
+<em>(Only Natural & IGYT)</em>
+</td>
+</tr>
+</tbody>
+</table>
+
+<div class="table-title">BASIC PRICE LIST [ODOUR FREE]</div>
+<div class="adjust-toolbar">
+<span style="font-size: 11px;">Quick adjust table rates:</span>
+<button type="button" class="adjust-btn" onclick="applyRateChange(250)">+250</button>
+<button type="button" class="adjust-btn" onclick="applyRateChange(-250)">-250</button>
+<button type="button" class="adjust-btn" onclick="applyRateChange(500)">+500</button>
+<button type="button" class="adjust-btn" onclick="applyRateChange(-500)">-500</button>
+<button type="button" class="adjust-btn" onclick="applyRateChange(1000)">+1000</button>
+<button type="button" class="adjust-btn" onclick="applyRateChange(-1000)">-1000</button>
+</div>
+
+<!-- Unified Table -->
+<table id="priceTable">
+<thead>
+<tr>
+<th style="width: 17%;">GRADE</th>
+<th class="col-16" style="width: 11.8%;">
+<div class="th-bf-check"><input type="checkbox" id="chk16" checked onchange="toggleBfCol(1, this.checked)"></div><br>
+                    16 BF<br>PRICE / TON
+</th>
+<th class="col-18" style="width: 11.8%;">
+<div class="th-bf-check"><input type="checkbox" id="chk18" checked onchange="toggleBfCol(2, this.checked)"></div><br>
+                    18 BF<br>PRICE / TON
+</th>
+<th class="col-20" style="width: 11.8%;">
+<div class="th-bf-check"><input type="checkbox" id="chk20" checked onchange="toggleBfCol(3, this.checked)"></div><br>
+                    20 BF<br>PRICE / TON
+</th>
+<th class="col-22" style="width: 11.8%;">
+<div class="th-bf-check"><input type="checkbox" id="chk22" checked onchange="toggleBfCol(4, this.checked)"></div><br>
+                    22 BF<br>PRICE / TON
+</th>
+<th class="col-24" style="width: 11.8%;">
+<div class="th-bf-check"><input type="checkbox" id="chk24" checked onchange="toggleBfCol(5, this.checked)"></div><br>
+                    24 BF<br>PRICE / TON
+</th>
+<th class="col-26" style="width: 11.8%;">
+<div class="th-bf-check"><input type="checkbox" id="chk26" checked onchange="toggleBfCol(6, this.checked)"></div><br>
+                    26 BF<br>PRICE / TON
+</th>
+<th class="col-28" style="width: 11.8%;">
+<div class="th-bf-check"><input type="checkbox" id="chk28" checked onchange="toggleBfCol(7, this.checked)"></div><br>
+                    28 BF<br>PRICE / TON
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="font-weight: bold; text-align: left; padding-left: 6px;">80 GSM</td>
+<td><input type="text" class="rate-input" value=""></td>
+<td><input type="text" class="rate-input" value="40500"></td>
+<td><input type="text" class="rate-input" value="41500"></td>
+<td><input type="text" class="rate-input" value="42500"></td>
+<td><input type="text" class="rate-input" value="44000"></td>
+<td><input type="text" class="rate-input" value=""></td>
+<td><input type="text" class="rate-input" value=""></td>
+</tr>
+<tr>
+<td style="font-weight: bold; text-align: left; padding-left: 6px;">90 GSM</td>
+<td><input type="text" class="rate-input" value=""></td>
+<td><input type="text" class="rate-input" value="39000"></td>
+<td><input type="text" class="rate-input" value="40000"></td>
+<td><input type="text" class="rate-input" value="41000"></td>
+<td><input type="text" class="rate-input" value="42500"></td>
+<td><input type="text" class="rate-input" value=""></td>
+<td><input type="text" class="rate-input" value=""></td>
+</tr>
+<tr>
+<td style="font-weight: bold; text-align: left; padding-left: 6px;">100 GSM</td>
+<td><input type="text" class="rate-input" value=""></td>
+<td><input type="text" class="rate-input" value="37500"></td>
+<td><input type="text" class="rate-input" value="38500"></td>
+<td><input type="text" class="rate-input" value="39500"></td>
+<td><input type="text" class="rate-input" value="41000"></td>
+<td><input type="text" class="rate-input" value=""></td>
+<td><input type="text" class="rate-input" value=""></td>
+</tr>
+<tr>
+<td style="font-weight: bold; text-align: left; padding-left: 6px;">110 GSM</td>
+<td><input type="text" class="rate-input" value=""></td>
+<td><input type="text" class="rate-input" value="37000"></td>
+<td><input type="text" class="rate-input" value="38000"></td>
+<td><input type="text" class="rate-input" value="39000"></td>
+<td><input type="text" class="rate-input" value="40500"></td>
+<td><input type="text" class="rate-input" value=""></td>
+<td><input type="text" class="rate-input" value=""></td>
+</tr>
+<tr>
+<td style="font-weight: bold; text-align: left; padding-left: 6px;">120 to 139 GSM</td>
+<td><input type="text" class="rate-input" value=""></td>
+<td><input type="text" class="rate-input" value="36500"></td>
+<td><input type="text" class="rate-input" value="37500"></td>
+<td><input type="text" class="rate-input" value="38500"></td>
+<td><input type="text" class="rate-input" value="40000"></td>
+<td><input type="text" class="rate-input" value=""></td>
+<td><input type="text" class="rate-input" value=""></td>
+</tr>
+<tr>
+<td style="font-weight: bold; text-align: left; padding-left: 6px;">140 TO 220 GSM</td>
+<td><input type="text" class="rate-input" value="35500"></td>
+<td><input type="text" class="rate-input" value="36500"></td>
+<td><input type="text" class="rate-input" value="37500"></td>
+<td><input type="text" class="rate-input" value="39000"></td>
+<td><input type="text" class="rate-input" value="41500"></td>
+<td><input type="text" class="rate-input" value="43500"></td>
+<td><input type="text" class="rate-input" value="45500"></td>
+</tr>
+<tr>
+<td style="font-weight: bold; text-align: left; padding-left: 6px;">221 TO 270 GSM</td>
+<td><input type="text" class="rate-input" value="36000"></td>
+<td><input type="text" class="rate-input" value="37000"></td>
+<td><input type="text" class="rate-input" value="38000"></td>
+<td><input type="text" class="rate-input" value="39500"></td>
+<td><input type="text" class="rate-input" value="42000"></td>
+<td><input type="text" class="rate-input" value="44000"></td>
+<td><input type="text" class="rate-input" value="46000"></td>
+</tr>
+<tr>
+<td style="font-weight: bold; text-align: left; padding-left: 6px;">271 TO 280 GSM</td>
+<td><input type="text" class="rate-input" value="36500"></td>
+<td><input type="text" class="rate-input" value="37500"></td>
+<td><input type="text" class="rate-input" value="38500"></td>
+<td><input type="text" class="rate-input" value="40000"></td>
+<td><input type="text" class="rate-input" value="42500"></td>
+<td><input type="text" class="rate-input" value="44500"></td>
+<td><input type="text" class="rate-input" value="46500"></td>
+</tr>
+</tbody>
+</table>
+
+<div class="footer-section">
+<div class="terms">
+<ul>
+<li>The payment should be made <strong><input type="text" class="txt-input" style="width: 70px; font-weight: bold;" value="30 days"></strong></li>
+<li>For Golden Yellow shade, the price will be Rs.1500 extra per MT.</li>
+<li>For AGYT & PGYT shade, the price will be Rs.1800 extra per MT.</li>
+<li>For SIAM Shade, (upto 22 BF) upto 200 GSM Extra Rs.<input type="text" class="txt-input" style="width: 45px; font-weight: bold;" value="2000"> per ton.</li>
+<li>For SIAM Shade, (upto 22 BF) 201-270 GSM Extra Rs.<input type="text" class="txt-input" style="width: 45px; font-weight: bold;" value="3000"> per ton.</li>
+<br>
+<li>
+<span id="taxText">SGST - 9% & CGST - 9% and freight will be charged extra.</span>
+<button type="button" class="tax-select-btn no-print" onclick="flipTax()">🔄 Switch to IGST / SGST</button>
+</li>
+<li><strong>THE PRICE IS SUBJECT TO CHANGE; WHICH MAY BE CONFIRMED BEFORE RELEASING ORDER.</strong></li>
+<li>For FSC orders please mention in your PO.</li>
+</ul>
+</div>
+<div class="contact-info">
+<strong>CONTACT PERSON</strong>
+<div class="person">
+                R. Venkatesh<br>
+                Executive Director<br>
+                7373778849<br>
+                rv@subampapers.com
+</div>
+<div class="person">
+                V. Manjula<br>
+                Sr. CRM - Sales<br>
+                9003979014<br>
+                sales@subampapers.com
+</div>
+</div>
+</div>
+</div>
+
+<script>
+    // --- AUTHENTICATION / CHECKPOINT LOGIC ---
+    const CORRECT_USER = "Subam";
+    const CORRECT_PASS = "Subam456";
+
+    function verifyLogin() {
+        const u = document.getElementById("loginUser").value.trim();
+        const p = document.getElementById("loginPass").value.trim();
+        const err = document.getElementById("loginError");
+        const overlay = document.getElementById("lockScreenOverlay");
+
+        if (u === CORRECT_USER && p === CORRECT_PASS) {
+            overlay.style.display = "none";
+            err.style.display = "none";
+            document.getElementById("loginPass").value = "";
+        } else {
+            err.style.display = "block";
+        }
+    }
+
+    function lockScreen() {
+        document.getElementById("lockScreenOverlay").style.display = "flex";
+        document.getElementById("loginUser").value = "";
+        document.getElementById("loginPass").value = "";
+        document.getElementById("loginError").style.display = "none";
+    }
+
+    // --- COLUMN TOGGLE & MACHINE BF RECALCULATION ---
+    function toggleBfCol(colIndex, isChecked) {
+        var table = document.getElementById("priceTable");
+        for (var r = 0; r < table.rows.length; r++) {
+            var cell = table.rows[r].cells[colIndex];
+            if (cell) {
+                cell.style.display = isChecked ? "" : "none";
+            }
+        }
+        recalcMachineSpecs();
+    }
+
+    function recalcMachineSpecs() {
+        var chkMap = [
+            { id: "chk16", val: 16 },
+            { id: "chk18", val: 18 },
+            { id: "chk20", val: 20 },
+            { id: "chk22", val: 22 },
+            { id: "chk24", val: 24 },
+            { id: "chk26", val: 26 },
+            { id: "chk28", val: 28 }
+        ];
+
+        var active = [];
+        for (var i = 0; i < chkMap.length; i++) {
+            var el = document.getElementById(chkMap[i].id);
+            if (el && el.checked) {
+                active.push(chkMap[i].val);
+            }
+        }
+
+        function formatRange(minLimit, maxLimit) {
+            var subset = [];
+            for (var j = 0; j < active.length; j++) {
+                if (active[j] >= minLimit && active[j] <= maxLimit) {
+                    subset.push(active[j]);
+                }
+            }
+            if (subset.length === 0) return "-";
+            if (subset.length === 1) return subset[0] + " BF";
+            return subset[0] + " to " + subset[subset.length - 1];
+        }
+
+        document.getElementById("pm3Bf").value = formatRange(18, 24);
+        document.getElementById("pm2Bf").value = formatRange(16, 24);
+        document.getElementById("pm1Bf").value = formatRange(16, 28);
+    }
+
+    // --- WORKING RATE ADJUSTMENT (+/- 250, 500, 1000) ---
+    function applyRateChange(delta) {
+        var inputs = document.querySelectorAll("#priceTable tbody input.rate-input");
+        for (var i = 0; i < inputs.length; i++) {
+            var inp = inputs[i];
+            if (inp.offsetParent !== null) {
+                var raw = inp.value.trim();
+                if (raw !== "") {
+                    var currentVal = parseInt(raw, 10);
+                    if (!isNaN(currentVal)) {
+                        inp.value = currentVal + delta;
+                    }
+                }
+            }
+        }
+    }
+
+    // --- TAX CONTROLS ---
+    function flipTax() {
+        var t = document.getElementById("taxText");
+        if (t.innerText.indexOf("SGST") !== -1) {
+            t.innerText = "IGST - 18% and freight will be charged extra.";
+        } else {
+            t.innerText = "SGST - 9% & CGST - 9% and freight will be charged extra.";
+        }
+    }
+
+    var tnPlaces = [
+        "tamil nadu", "tamilnadu", "tn", "hosur", "chennai", "madurai", "coimbatore", 
+        "trichy", "salem", "tirunelveli", "tirupur", "erode", "vellore", "thoothukudi", 
+        "dindigul", "thanjavur", "ranipet", "sivakasi", "karur", "udumalpet", "namakkal", 
+        "krishnagiri", "dharmapuri", "kanchipuram", "tiruvallur", "cuddalore", "pudukkottai", 
+        "ramanathapuram", "sivaganga", "theni", "thiruvarur", "tiruvannamalai", "virudhunagar", 
+        "ariyalur", "perambalur", "kallakurichi", "tenkasi", "tirupattur", "mayiladuthurai", 
+        "ambattur", "avadi", "pollachi", "rajapalayam", "nagercoil"
+    ];
+
+    function runTaxCheck() {
+        var area = (document.getElementById("areaField").value || "").toLowerCase().trim();
+        var taxElem = document.getElementById("taxText");
+        var isTN = false;
+        for (var i = 0; i < tnPlaces.length; i++) {
+            if (area.indexOf(tnPlaces[i]) !== -1) {
+                isTN = true;
+                break;
+            }
+        }
+        if (isTN) {
+            taxElem.innerText = "SGST - 9% & CGST - 9% and freight will be charged extra.";
+        } else {
+            taxElem.innerText = "IGST - 18% and freight will be charged extra.";
+        }
+    }
+
+    window.onload = function() {
+        runTaxCheck();
+    };
+</script>
+</body>
+</html>
